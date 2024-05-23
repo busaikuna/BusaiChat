@@ -6,7 +6,7 @@ const path = require("path");
 const httpServer = http.createServer(app);
 const io = require("socket.io")(httpServer);
 
-app.use(express.static(path.join(__dirname, "../public")));
+app.use(express.static(path.join(__dirname, "../../client/public/")));
 
 io.on("connection", socket => {
     console.log(`Usuário conectado com ID: ${socket.id}`);
