@@ -7,17 +7,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js" integrity="sha512-luMnTJZ7oEchNDZAtQhgjomP1eZefnl82ruTH/3Oj/Yu5qYtwL7+dVRccACS/Snp1lFXq188XFipHKYE75IaQQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="login.css">
 </head>
 <body>
     <header>
         <h1>BusaiChat</h1>
     </header>
-    <main class="login">
-        <img class="account-icon" src="imgs/account.png">
-        <input class="username" type="text">
-        <input class="submit" type="button" value="Enviar">
+    <main>
+        <div class="view">
+            <ul class="view-messages" type="none">
+            </ul>
+        </div>
+        <div class="div-send">
+            <input class="input" maxlength="150" type="text">
+            <input class="button" type="button" value="Enviar">
+        </div>
     </main>
-    <script src="login.js"></script>
+    <script type="text/javascript" src="client.js"></script>
 </body>
 </html>

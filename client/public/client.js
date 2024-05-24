@@ -25,7 +25,7 @@ function send() {
         msg.textContent = input;
         viewMessages.appendChild(msg);
     
-        socket.emit("msg", { msg: input });
+        socket.emit("msg", { msg: input, username: localStorage.getItem('username')});
         console.log(input);
         inputElement.value = "";
     
@@ -35,12 +35,14 @@ function send() {
 
 socket.on("newMessage", (data) => {
     if(socket.id != data.id){
-        console.log("oi");
-        let msg = document.createElement("li");
-        msg.classList.add("another-message")
-        msg.textContent = data.msg;
-        viewMessages.appendChild(msg);
+        const messages = document.querySelector('.view-messages')
 
+        messages.innerHTML += `
+            <div class="another-div-message">
+                <li class="username">${data.nick}</li>
+                <li class="another-message">${data.msg}</li>
+            </div>
+        `
         view.scrollTop = view.scrollHeight;
     }
 });
