@@ -13,20 +13,16 @@ let imgProcess = false;
 
 let users = [];
 
+
+
 app.use(express.static(path.join(__dirname, "../../client/public/")));
 
 io.on("connection", (socket) => {
     console.log(`Usuário conectado com ID: ${socket.id}`);
     console.log(`Endereço IP do usuário: ${socket.handshake.address}`);
 
-    socket.on("disconnect", () => {
-        users = users.filter((user) => user.id !== socket.id);
-        updateUsers();
-    });
-
     socket.on("online", (data) => {
-        users.push({ id: socket.id, username: data.username });
-        updateUsers();
+        users.push({[socket.id]: data.user})
     });
 
     socket.on("msg", async (mensagem) => {
@@ -50,14 +46,14 @@ io.on("connection", (socket) => {
                         );
 
                         await page.waitForSelector(
-                            "#rso > div > div > div.wH6SXe.u32vCb > div > div img",
+                            "#rso > div > div > div > div > div img",
                             { visible: true }
                         );
 
                         for (let i = 0; i < quantImg; i++) {
                             const imageUrl = await page.evaluate((index) => {
                                 const imgs = document.querySelectorAll(
-                                    "#rso > div > div > div.wH6SXe.u32vCb > div > div img"
+                                    "#rso > div > div > div > div > div img"
                                 );
                                 const img = imgs[index];
                                 return img ? img.src : null;
@@ -65,11 +61,11 @@ io.on("connection", (socket) => {
 
                             if (imageUrl) {
                                 io.emit("imgSearch", { imageUrl });
-                                console.log("Imagem enviada:", imageUrl);
+                                console.log("Imagem enviada:");
                             }
                         }
 
-                        await browser.close();
+                        await browser.close()
                     } catch (error) {
                         console.error("Erro durante a execução do script:", error);
                     } finally {
@@ -127,12 +123,6 @@ io.on("connection", (socket) => {
         io.emit("newMessage", { msg: mensagem.msg, id: socket.id, nick: mensagem.username });
     });
 });
-
-function updateUsers() {
-    const onlineUsers = users.map((user) => user.username);
-    io.emit("online", { count: users.length, users: onlineUsers });
-    console.log({ onlineUsers });
-}
 
 const PORT = process.env.PORT || 9000;
 

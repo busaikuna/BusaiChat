@@ -2,13 +2,35 @@ var socketURL = window.location.protocol + "//" + window.location.hostname + (wi
 var socket = io(socketURL);
 console.log(socketURL)
 
-document.addEventListener("load", () => {
-    socket.on("online")
-})
+
+function online() {
+    socket.emit("online", { id: socket.id, user: localStorage.getItem('username') })
+}
 
 let button = document.querySelector(".button");
 let view = document.querySelector(".view");
 let viewMessages = document.querySelector(".view-messages")
+let on = document.querySelector(".on")
+let onDiv = document.querySelector(".on-div")
+let disconnect = document.querySelector(".disconnect")
+
+const messages = document.querySelector('.view-messages')
+
+let clickOn = false;
+on.addEventListener("click", () => {
+    if (clickOn == false) {
+        clickOn = true
+        onDiv.style.display = "block"
+    } else {
+        clickOn = false
+        onDiv.style.display = "none"
+    }
+})
+
+disconnect.addEventListener("click", ()=>{
+    localStorage.removeItem("username")
+    window.location.href = socketURL
+})
 
 button.addEventListener("click", () => {
     send();
@@ -37,10 +59,18 @@ function send() {
     }
 }
 
+socket.on("online", (data) => {
+    if (data.id != socket.id) {
+        onDiv.innerHTML += `<div class="user-on">
+        <p>${data.user}</p>
+        <div class="green-ball"></div>
+        </div>`
+    }
+
+})
+
 socket.on("imgSearch", (data) => {
     if (data.response) {
-        const messages = document.querySelector('.view-messages')
-
         messages.innerHTML += `
             <div class="another-div-message">
                 <li class="username">bot IMG</li>
@@ -49,8 +79,6 @@ socket.on("imgSearch", (data) => {
         `
         view.scrollTop = view.scrollHeight;
     } else {
-        const messages = document.querySelector('.view-messages')
-
         messages.innerHTML += `
     <div class="another-div-message">
     <li class="username">Bot IMG</li>
@@ -63,8 +91,7 @@ socket.on("imgSearch", (data) => {
 })
 
 socket.on("gpt", (data) => {
-    if(data.processingGpt){
-        const messages = document.querySelector('.view-messages')
+    if (data.processingGpt) {
 
         messages.innerHTML += `
             <div class="another-div-message">
@@ -72,9 +99,8 @@ socket.on("gpt", (data) => {
                 <li class="another-message">${data.processingGpt}</li>
             </div>
         `
-        view.scrollTop = view.scrollHeight;   
-    }else if (data.response){
-        const messages = document.querySelector('.view-messages')
+        view.scrollTop = view.scrollHeight;
+    } else if (data.response) {
 
         messages.innerHTML += `
             <div class="another-div-message">
@@ -82,24 +108,22 @@ socket.on("gpt", (data) => {
                 <li class="another-message">${data.response}</li>
             </div>
         `
-        view.scrollTop = view.scrollHeight;     
-    }else{
-        const messages = document.querySelector('.view-messages')
+        view.scrollTop = view.scrollHeight;
+    } else {
 
-    messages.innerHTML += `
+        messages.innerHTML += `
         <div class="another-div-message">
             <li class="username">CHAT GPT</li>
             <li class="another-message">${data.msg}</li>
         </div>
     `
-    view.scrollTop = view.scrollHeight;
+        view.scrollTop = view.scrollHeight;
     }
 })
 
 
 socket.on("newMessage", (data) => {
     if (socket.id != data.id) {
-        const messages = document.querySelector('.view-messages')
 
         messages.innerHTML += `
             <div class="another-div-message">

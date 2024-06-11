@@ -2,7 +2,11 @@ var socketURL = window.location.protocol + "//" + window.location.hostname + (wi
 var socket = io(socketURL);
 console.log(socketURL)
 
-//localStorage.clear()
+document.addEventListener("keydown", (e)=>{
+    if (e.key == "Enter"){
+        submitar();
+    }
+})
 
 window.addEventListener('load', () => {
     if (localStorage.getItem('username')) {

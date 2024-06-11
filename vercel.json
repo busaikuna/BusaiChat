@@ -1,0 +1,10 @@
+{
+    "version": 2,
+    "builds": [
+      { "src": "subdiretorio/package.json", "use": "@vercel/node" }
+    ],
+    "routes": [
+      { "src": "/(.*)", "dest": "/subdiretorio/$1" }
+    ]
+  }
+  

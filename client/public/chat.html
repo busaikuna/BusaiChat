@@ -8,22 +8,27 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js" integrity="sha512-luMnTJZ7oEchNDZAtQhgjomP1eZefnl82ruTH/3Oj/Yu5qYtwL7+dVRccACS/Snp1lFXq188XFipHKYE75IaQQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="index.css">
 </head>
-<body>
+<body onload="online()">
     <header>
+        <p class="disconnect">X</p>
         <h1>BusaiChat</h1>
+        <p class="on">Online ˇ</p>
+        <div class="on-div">
+        </div>
     </header>
     <main>
-        <div class="view">
-            <ul class="view-messages" type="none">
-                <div class="another-div-message">
-                    <li class="username">Bot IMG</li>
-                    <img class="sendImg" src=""></img>
-                </div>
-            </ul>
+        <div class="main-content">
+            <div class="view">
+                <ul class="view-messages" type="none">
+                </ul>
+            </div>
+            <div class="div-send">
+                <input class="input" maxlength="150" type="text">
+                <input class="button" type="button" value="Enviar">
+            </div>
         </div>
-        <div class="div-send">
-            <input class="input" maxlength="150" type="text">
-            <input class="button" type="button" value="Enviar">
+        <div class="online">
+
         </div>
     </main>
     <script type="text/javascript" src="client.js"></script>
