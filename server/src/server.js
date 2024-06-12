@@ -21,9 +21,18 @@ io.on("connection", (socket) => {
     console.log(`Usuário conectado com ID: ${socket.id}`);
     console.log(`Endereço IP do usuário: ${socket.handshake.address}`);
 
-    socket.on("online", (data) => {
-        users.push({[socket.id]: data.user})
+    socket.on('online', (data) => {
+        users.push({ id: socket.id, data: data });
+        io.emit('online', users);
+        console.log(users);
     });
+    
+    socket.on('disconnect', () => {
+        users = users.filter(user => user.id !== socket.id);
+        io.emit('online', users);
+        console.log(users);
+    });
+
 
     socket.on("msg", async (mensagem) => {
         if (mensagem.msg.includes("./img")) {
