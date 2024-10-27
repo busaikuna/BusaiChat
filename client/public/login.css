@@ -37,3 +37,21 @@ legend{
     height: 4vh;
     margin-bottom: 10vh;
 }
+h1{
+    position: fixed;
+}
+
+@media (max-width: 768px) {
+    .account-icon{
+        width: 50vw;
+    }
+    .username {
+        width: 65vw;
+        height: 5vh;
+        font-size: 2.5vh;
+    }
+    .submit{
+        margin-top: 2.5vh;
+        width: 50vw;
+    }
+}
