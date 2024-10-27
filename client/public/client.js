@@ -60,14 +60,39 @@ function send() {
 }
 
 socket.on("online", (data) => {
-    if (data.id != socket.id) {
-        onDiv.innerHTML += `<div class="user-on">
-        <p>${data.user}</p>
-        <div class="green-ball"></div>
-        </div>`
+    if (data.id !== socket.id) {
+        const existingUser = Array.from(onDiv.children).some(user => user.textContent.includes(data.user));
+        if (!existingUser) {
+            onDiv.innerHTML += `<div class="user-on">
+            <p>${data.user}</p>
+            <div class="green-ball"></div>
+            </div>`;
+        }
     }
+});
 
-})
+socket.on("initialUsers", (users) => {
+    users.forEach(user => {
+        if (user.id !== socket.id) {
+            const existingUser = Array.from(onDiv.children).some(u => u.textContent.includes(user.data.user));
+            if (!existingUser) {
+                onDiv.innerHTML += `<div class="user-on">
+                <p>${user.data.user}</p>
+                <div class="green-ball"></div>
+                </div>`;
+            }
+        }
+    });
+});
+
+socket.on("offline", (data) => {
+    const userDiv = Array.from(onDiv.children).find(user => user.textContent.includes(data.id));
+    if (userDiv) {
+        onDiv.removeChild(userDiv);
+    }
+});
+
+
 
 socket.on("imgSearch", (data) => {
     if (data.response) {
